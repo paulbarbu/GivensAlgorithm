@@ -6,7 +6,6 @@ using System.Text;
 namespace Givens
 {    
     //TODO: inherit from Array
-    //TODO: operator *
     //TODO: access directly the elements to set them
     class Matrix
     {
@@ -50,21 +49,20 @@ namespace Givens
             }
         }
 
-        //TODO: fast matrix multiplication algorithm
-        public Matrix product(Matrix b)
+        public static Matrix operator*(Matrix a, Matrix b)
         {
-            if(m != b.n){
+            if(a.m != b.n){
                 return null;
             }
 
             if (0 == b.m)
             {
-                double[] r = new double[n];
+                double[] r = new double[a.n];
 
-                for (int i = 0; i < n; i++)
+                for (int i = 0; i < a.n; i++)
                 {
                         r[i] = 0;
-                        for (int k = 0; k < m; k++)
+                        for (int k = 0; k < a.m; k++)
                         {
                             r[i] += a[i, k] * b[k];
                         }
@@ -74,14 +72,14 @@ namespace Givens
             }
             else
             {
-                double[,] r = new double[n, b.m];
+                double[,] r = new double[a.n, b.m];
 
-                for (int i = 0; i < n; i++)
+                for (int i = 0; i < a.n; i++)
                 {
                     for (int j = 0; j < b.m; j++)
                     {
                         r[i, j] = 0;
-                        for (int k = 0; k < m; k++)
+                        for (int k = 0; k < a.m; k++)
                         {
                             r[i, j] += a[i, k] * b[k, j];
                         }

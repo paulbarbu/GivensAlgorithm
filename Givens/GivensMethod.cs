@@ -13,7 +13,21 @@ namespace Givens
         
         public GivensMethod(Matrix A, Matrix b)
         {
-            //TODO: check if A is square and if b is a vector and if their dimensions match (A.n==b.n)
+            if (A.n != A.m)
+            {
+                throw new ArgumentException("The first matrix is not square!");
+            }
+
+            if (A.n != b.n)
+            {
+                throw new ArgumentException("The number of lines in the two matrices do not match!");
+            }
+
+            if (0 != b.m)
+            {
+                throw new ArgumentException("The second matrix should have a single dimension!");
+            }
+
             //TODO: check not to have leaked implementation details of Matrix here (such as m==0)
             this.A = A;
             this.b = b;
@@ -30,7 +44,7 @@ namespace Givens
                         G.Add(generateG(i, j));
                         Debug.WriteLine(G[G.Count-1]);
                         
-                        A = G[G.Count-1].product(A);
+                        A = G[G.Count-1] * A;
 
                         Debug.WriteLine("A =");
                         Debug.WriteLine(A);
@@ -50,7 +64,7 @@ namespace Givens
             Debug.WriteLine("Qt =");
             Debug.WriteLine(Q);
 
-            Matrix Qb = Q.product(b);
+            Matrix Qb = Q * b;
             double[] x = new double[Qb.n];
             
             Debug.WriteLine("Qb =");
@@ -79,7 +93,7 @@ namespace Givens
             {
                 G[i].transpose();
 
-                Q = Q.product(G[i]);
+                Q = Q * G[i];
             }
 
             Debug.WriteLine("Q =");
@@ -93,7 +107,7 @@ namespace Givens
             double c = a / r;
             double s = -b / r;
 
-            double[,] g = new double[A.n, A.m]; //TODO: zero by default?
+            double[,] g = new double[A.n, A.m];
 
             for (int k = 0; k < A.n; k++)
             {
