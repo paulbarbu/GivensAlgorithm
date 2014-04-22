@@ -4,15 +4,27 @@ using System.Linq;
 using System.Text;
 
 namespace Givens
-{    
-    //TODO: inherit from Array
-    //TODO: access directly the elements to set them
+{
     class Matrix
     {
-
         private double[,] a;
         public int n { get; private set; }
         public int m { get; private set; }
+
+        public Matrix(int n, int m=0)
+        {
+            if (m == 0)
+            {
+                this.a = new double[n, 1];
+            }
+            else
+            {
+                this.a = new double[n, m];
+            }
+
+            this.n = n;
+            this.m = m;
+        }
 
         public Matrix(double[,] a)
         {
@@ -46,6 +58,21 @@ namespace Givens
                 }
 
                 throw new IndexOutOfRangeException();
+            }
+
+            set{
+                if (0 == m && i < n && i >= 0)
+                {
+                    a[i, 0] = value;
+                }
+                else if (i < n && j < m && i >= 0 && j >= 0)
+                {
+                    a[i, j] = value;
+                }
+                else
+                {
+                    throw new IndexOutOfRangeException();
+                }
             }
         }
 

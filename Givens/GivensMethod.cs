@@ -65,7 +65,7 @@ namespace Givens
             Debug.WriteLine(Q);
 
             Matrix Qb = Q * b;
-            double[] x = new double[Qb.n];
+            Matrix X = new Matrix(Qb.n);
             
             Debug.WriteLine("Qb =");
             Debug.WriteLine(Qb);
@@ -75,13 +75,13 @@ namespace Givens
                 double S = 0;
 
                 for(int j = i+1; j<Qb.n; j++){
-                    S += x[j] * A[i, j];
+                    S += X[j] * A[i, j];
                 }
 
-                x[i] = (Qb[i] - S) / A[i, i];
+                X[i] = (Qb[i] - S) / A[i, i];
             }
 
-            return new Matrix(x);
+            return X;
         }
 
         private void computeQ()
@@ -107,18 +107,18 @@ namespace Givens
             double c = a / r;
             double s = -b / r;
 
-            double[,] g = new double[A.n, A.m];
+            Matrix G = new Matrix(A.n, A.m);
 
             for (int k = 0; k < A.n; k++)
             {
-                g[k, k] = 1;
+                G[k, k] = 1;
             }
 
-            g[i, i] = g[j, j] = c;
-            g[i, j] = s;
-            g[j, i] = -s;
+            G[i, i] = G[j, j] = c;
+            G[i, j] = s;
+            G[j, i] = -s;
 
-            return new Matrix(g);
+            return G;
         }
     }
 }
