@@ -28,15 +28,14 @@ namespace Givens
                 throw new ArgumentException("The second matrix should have a single dimension!");
             }
 
-            //TODO: check not to have leaked implementation details of Matrix here (such as m==0)
             this.A = A;
             this.b = b;
         }
 
         public Matrix solve(){
-            for (int i = 1; i < A.n; i++)
+            for (int j = 0; j < A.n - 1; j++)
             {
-                for (int j = 0; j < i; j++)
+                for (int i = A.n-1; i > j; i--)
                 {
                     if (0 != A[i, j])
                     {
@@ -52,7 +51,19 @@ namespace Givens
                 }
             }
 
-            computeQ();
+            if (G.Count > 0)
+            {
+                computeQ();
+            }
+            else
+            {
+                Q = new Matrix(A.n, A.n);
+
+                for (int i = 0; i < A.n; i++ )
+                {
+                    Q[i, i] = 1;
+                }
+            }
             
             return solveUpper();
         }
@@ -106,7 +117,7 @@ namespace Givens
             double r = Math.Sqrt(a * a + b * b);
             double c = a / r;
             double s = -b / r;
-
+            
             Matrix G = new Matrix(A.n, A.m);
 
             for (int k = 0; k < A.n; k++)
@@ -114,9 +125,21 @@ namespace Givens
                 G[k, k] = 1;
             }
 
-            G[i, i] = G[j, j] = c;
-            G[i, j] = s;
-            G[j, i] = -s;
+            Debug.WriteLine("G before populating s and c:");
+            Debug.WriteLine(G);
+                        /*
+            G[i-1, j+1] = G[i, j+2] = c;
+            Debug.WriteLine(G);
+            G[i-1, j+2] = -s;
+            Debug.WriteLine(G);
+            G[i, j+1] = s;*/
+            
+            G[i-1, i-1] = G[i , i] = c;
+            Debug.WriteLine(G);
+            G[i-1, i] = -s;
+            Debug.WriteLine(G);
+            G[i, i-1] = s;
+            Debug.WriteLine(G);
 
             return G;
         }
