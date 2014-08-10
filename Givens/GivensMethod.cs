@@ -127,12 +127,6 @@ namespace Givens
 
             Debug.WriteLine("G before populating s and c:");
             Debug.WriteLine(G);
-                        /*
-            G[i-1, j+1] = G[i, j+2] = c;
-            Debug.WriteLine(G);
-            G[i-1, j+2] = -s;
-            Debug.WriteLine(G);
-            G[i, j+1] = s;*/
             
             G[i-1, i-1] = G[i , i] = c;
             Debug.WriteLine(G);
